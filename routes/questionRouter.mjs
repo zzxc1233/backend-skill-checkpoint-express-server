@@ -1,10 +1,12 @@
 import { Router } from "express";
 import connectionPool from "../utils/db.mjs";
+import validateQuestion from "../middleware/validationQuestions.mjs";
+import validateAnswer from "../middleware/validationAnswers.mjs";
 
 const questionRouter = Router();
 
 // Create a new question
-questionRouter.post("/", async (req, res) => {
+questionRouter.post("/", validateQuestion, async (req, res) => {
     try {
         const { title, description, category } = req.body;
 
@@ -129,7 +131,7 @@ questionRouter.get("/:questionId", async (req, res) => {
 });
 
 // Update a question by ID
-questionRouter.put("/:questionId", async (req, res) => {
+questionRouter.put("/:questionId", validateQuestion, async (req, res) => {
     try {
         const { questionId } = req.params;
         const { title, description, category } = req.body;
@@ -255,7 +257,7 @@ questionRouter.get("/:questionId/answers", async (req, res) => {
 })
 
 // Create an answer for a question
-questionRouter.post("/:questionId/answers", async (req, res) => {
+questionRouter.post("/:questionId/answers", validateAnswer, async (req, res) => {
     try {
         const { questionId } = req.params;
         const { content } = req.body;

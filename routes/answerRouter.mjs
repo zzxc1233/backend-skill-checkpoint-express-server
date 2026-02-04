@@ -1,5 +1,6 @@
 import { Router } from "express";
 import connectionPool from "../utils/db.mjs";
+import validateAnswer from "../middleware/validationAnswers.mjs";
 
 const answerRouter = Router();
 
@@ -78,7 +79,7 @@ answerRouter.get("/", async (req, res) => {
 })
 
 // Update an answer
-answerRouter.put("/:answerId", async (req, res) => {
+answerRouter.put("/:answerId", validateAnswer, async (req, res) => {
     try {
         const { answerId } = req.params;
         const { content } = req.body;
